@@ -1,6 +1,7 @@
 
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react'
 import './App.css'
+import { useState } from 'react';
 
 
 function App() {
@@ -8,11 +9,38 @@ function App() {
   const { scrollYProgress } = useScroll()
   const scale = useTransform(scrollYProgress, [0, 1], [1, 2]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  //variant
+  // const boxVariants = {
+  //   hidden: { opacity: 0, y: -100 },
+  //   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  // };
+  //last--------------
 
 
-
+  const [show, setShow] = useState(true);// animated presence
   return (
     <>
+
+      <button onClick={() => setShow(!show)} className="mb-5 bg-black text-white px-4 py-2 rounded">
+        Toggle Box
+      </button>
+      <AnimatePresence>
+        {show && (
+          <motion.div
+            className="h-64 w-60 bg-yellow-500"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            // exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 5 }}
+          />
+        )}
+      </AnimatePresence>
+
+
+
+
+
+
       {/* Animated Box */}
 
 
@@ -123,19 +151,42 @@ function App() {
 
 
       {/* while in view ******************* */}
-
+      {/* varient
+ <motion.div
+      className="h-64 w-60 bg-purple-500 mx-auto my-20"
+      variants={boxVariants}
+      initial="hidden"
+      animate="visible"
+    /> */}
 
       <motion.div
-        initial={{ opacity: 0, x:500,y: 100 }}
-        whileInView={{ opacity: 1, x:0, y: 0 }}
-        transition={{ duration: 2}}
+        initial={{ opacity: 0, x: 500, y: 100 }}
+        whileInView={{ opacity: 1, x: 0, y: 0 }}
+        transition={{ duration: 2 }}
       >
         <h1 className="text-4xl font-bold text-center">Hello World</h1>
       </motion.div>
 
 
-      <div className="h-[1000px]" /> {/* More space after to scroll back up */}
+      {/* More space after to scroll back up */}
 
+
+      {/* last */}
+
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg mt-10 mx-auto block"
+      >
+        Click Me
+      </motion.button>
+      <motion.button
+        whileHover={{ scale: 1.05, x: -10, y: -10 }}
+        whileTap={{ scale: 0.9 }}
+        className="bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-lg mt-10 mx-auto block"
+      >
+        Click Me
+      </motion.button>
 
 
     </>
